@@ -1,0 +1,62 @@
+plugins {
+  id "org.jruyi.thrift" version "0.4.0"
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+configurations.all {
+	transitive = false
+}
+
+repositories {
+   mavenCentral()
+   jcenter()
+}
+
+dependencies {
+   compile 'org.codehaus.groovy:groovy-all:2.4.7'
+   compile 'log4j:log4j:1.2.17'
+   compile 'org.slf4j:slf4j-api:1.7.5'
+   compile 'org.slf4j:slf4j-log4j12:1.7.5'
+   compile 'org.apache.thrift:libthrift:0.9.3'
+   compile group: 'org.scijava', name: 'native-lib-loader', version: '2.1.4'
+   compile 'com.kohlschutter.junixsocket:junixsocket-common:2.0.4'
+   compile 'com.kohlschutter.junixsocket:junixsocket-native-common:2.0.4'
+   compile 'junit:junit:3.8.1'
+}
+
+test {
+	testLogging {
+		// Make sure output from
+		// standard out or error is shown
+		// in Gradle output.
+		showStandardStreams = true
+ 
+		// Or we use events method:
+		// events 'standard_out', 'standard_error'
+ 
+		// Or set property events:
+		// events = ['standard_out', 'standard_error']
+ 
+		// Instead of string values we can
+		// use enum values:
+		// events org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT,
+		//        org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
+	}
+	systemProperties['extension.socket'] = System.getProperty('user.home') + '/.osquery/shell.em'
+}
+
+compileThrift {
+ 	sourceDir "src/main/thrift"
+	outputDir "$buildDir/gen-src"
+	
+    generator 'java'
+}
+
+task printProps {
+	doLast {
+		println System.properties['extension.socket']
+	}
+}
