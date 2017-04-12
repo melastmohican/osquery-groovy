@@ -12,4 +12,4 @@ before_install:
 
 install: gradle -q assemble
 
-script: gradle clean check distZip --stacktrace
+script: gradle clean check --stacktrace
