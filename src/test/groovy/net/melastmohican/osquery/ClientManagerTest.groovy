@@ -10,7 +10,7 @@ class ClientManagerTest extends GroovyTestCase {
 
     void setUp() {
         System.out.println("Starting service...")
-        osqueryctl.start()
+        //osqueryctl.start()
 	}
 	void testDummy() {
 		
